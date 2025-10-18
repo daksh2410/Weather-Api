@@ -8,7 +8,12 @@ const cache = require('./cache');
 
 const PORT = process.env.PORT || 3000;
 // Load configuration
-const config = require('./config.example');
+let config = {};
+try {
+  config = require('./config');
+} catch (err) {
+  console.log('Config file not found, using default values');
+}
 
 // Replace with your actual API key from weatherapi.com
 const API_KEY = process.env.WEATHERAPI_KEY || config.WEATHERAPI_KEY || 'YOUR_WEATHERAPI_KEY_HERE';
