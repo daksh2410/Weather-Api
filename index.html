@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechWeather - API Integrated Weather App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="main-title">TechWeather</h1>
+            <p class="subtitle">API-Integrated Weather Forecast</p>
+        </header>
+        
+        <main>
+            <div class="search-container">
+                <form id="weatherForm">
+                    <input type="text" id="cityInput" placeholder="Enter city name..." autocomplete="off">
+                    <button type="submit" id="searchBtn">Search</button>
+                </form>
+                <div class="recent-searches" id="recentSearches">
+                    <h3>Recent Searches:</h3>
+                    <div class="search-tags" id="searchTags">
+                        <!-- Recent searches will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading hidden" id="loading">
+                <div class="spinner"></div>
+                <p>Loading weather data...</p>
+            </div>
+            
+            <div class="error-message hidden" id="errorMessage">
+                <p>City not found. Please try again.</p>
+            </div>
+            
+            <div class="weather-display hidden" id="weatherDisplay">
+                <div class="current-weather">
+                    <h2 id="cityName">City Name</h2>
+                    <div class="weather-main">
+                        <div class="temperature">
+                            <span id="temperature">--</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="weather-icon">
+                            <img id="weatherIcon" src="" alt="Weather icon">
+                        </div>
+                    </div>
+                    <p class="weather-description" id="weatherDescription">Weather Description</p>
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <span class="label">Feels Like:</span>
+                            <span id="feelsLike">--°C</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Humidity:</span>
+                            <span id="humidity">--%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Wind Speed:</span>
+                            <span id="windSpeed">-- m/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>© 2025 TechWeather | API-Integrated Web App</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
