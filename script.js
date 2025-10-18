@@ -245,10 +245,8 @@ function hideWeatherDisplay() {
 // Update map background based on weather condition
 function updateMapBackground(condition) {
     const mapBackground = document.getElementById('mapBackground');
-    if (!mapBackground) return;
-    
-    // Clear previous content
-    mapBackground.innerHTML = '';
+    const mapContainer = document.getElementById('mapContainer');
+    if (!mapBackground || !mapContainer) return;
     
     // Add weather-specific styling
     let gradient;
@@ -268,26 +266,28 @@ function updateMapBackground(condition) {
     }
     
     // Set the background
-    mapBackground.style.background = gradient;
+    mapContainer.style.background = gradient;
     
     // Add animated elements for visual interest
     createMapElements(mapBackground, condition);
     
     // Add overlay for better text readability
-    const overlay = document.createElement('div');
-    overlay.className = 'map-overlay';
-    mapBackground.appendChild(overlay);
+    // (overlay already exists in HTML)
 }
 
 // Create animated elements for the map background
 function createMapElements(container, condition) {
+    // Clear existing elements except overlay
+    const existingElements = container.querySelectorAll('.map-element');
+    existingElements.forEach(el => el.remove());
+    
     // Create multiple animated elements
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 8; i++) {
         const element = document.createElement('div');
         element.className = 'map-element';
         
         // Position randomly
-        const size = Math.floor(Math.random() * 30) + 10;
+        const size = Math.floor(Math.random() * 40) + 15;
         const posX = Math.floor(Math.random() * 80) + 10;
         const posY = Math.floor(Math.random() * 80) + 10;
         
@@ -298,28 +298,44 @@ function createMapElements(container, condition) {
         
         // Style based on weather condition
         if (condition.toLowerCase().includes('sun') || condition.toLowerCase().includes('clear')) {
-            element.style.background = 'rgba(255, 255, 255, 0.3)';
-            element.style.borderRadius = '50%';
-            element.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
-        } else if (condition.toLowerCase().includes('cloud')) {
             element.style.background = 'rgba(255, 255, 255, 0.4)';
             element.style.borderRadius = '50%';
-            element.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
+            element.style.boxShadow = '0 0 25px rgba(255, 255, 255, 0.6)';
+        } else if (condition.toLowerCase().includes('cloud')) {
+            element.style.background = 'rgba(255, 255, 255, 0.5)';
+            element.style.borderRadius = '50%';
+            element.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.4)';
         } else if (condition.toLowerCase().includes('rain')) {
-            element.style.background = 'rgba(255, 255, 255, 0.2)';
-            element.style.borderRadius = '2px';
-            element.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.2)';
-        } else {
-            element.style.background = 'rgba(255, 255, 255, 0.2)';
+            element.style.background = 'rgba(255, 255, 255, 0.3)';
             element.style.borderRadius = '3px';
-            element.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.2)';
+            element.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
+        } else {
+            element.style.background = 'rgba(255, 255, 255, 0.3)';
+            element.style.borderRadius = '4px';
+            element.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
         }
         
         // Add animation
-        const duration = Math.floor(Math.random() * 10) + 10;
+        const duration = Math.floor(Math.random() * 15) + 10;
         element.style.animation = `floatMap ${duration}s infinite ease-in-out`;
         element.style.animationDelay = `${Math.random() * 5}s`;
         
         container.appendChild(element);
     }
+    
+    // Add a central marker to represent the city
+    const cityMarker = document.createElement('div');
+    cityMarker.className = 'map-element city-marker';
+    cityMarker.style.width = '20px';
+    cityMarker.style.height = '20px';
+    cityMarker.style.left = '50%';
+    cityMarker.style.top = '50%';
+    cityMarker.style.transform = 'translate(-50%, -50%)';
+    cityMarker.style.background = 'rgba(255, 255, 255, 0.9)';
+    cityMarker.style.borderRadius = '50%';
+    cityMarker.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.8)';
+    cityMarker.style.zIndex = '10';
+    cityMarker.style.animation = 'pulse 2s infinite';
+    
+    container.appendChild(cityMarker);
 }
