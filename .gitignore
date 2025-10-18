@@ -3,6 +3,7 @@ node_modules/
 
 # Environment variables
 .env
+config.example.js
 config.js
 
 # Logs

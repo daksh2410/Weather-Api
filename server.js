@@ -8,7 +8,7 @@ const cache = require('./cache');
 
 const PORT = 3000;
 // Load configuration
-const config = require('./config');
+const config = require('./config.example');
 
 // Replace with your actual API key from weatherapi.com
 const API_KEY = config.WEATHERAPI_KEY || 'YOUR_WEATHERAPI_KEY_HERE';
