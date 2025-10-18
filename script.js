@@ -21,9 +21,11 @@ const API_BASE_URL = '/api/weather';
 
 // Check for saved dark mode preference
 document.addEventListener('DOMContentLoaded', () => {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const isDarkMode = localStorage.getItem('darkMode') !== 'false'; // Default to dark mode
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.add('light-mode');
     }
     
     // Create dark mode toggle button
@@ -82,13 +84,22 @@ function createDarkModeToggle() {
 
 // Toggle dark mode
 function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDarkMode);
+    const isCurrentlyDark = document.body.classList.contains('dark-mode');
+    
+    if (isCurrentlyDark) {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('light-mode');
+        localStorage.setItem('darkMode', 'false');
+    } else {
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'true');
+    }
     
     // Update button icon
     const toggleButton = document.querySelector('.dark-mode-toggle');
-    toggleButton.innerHTML = isDarkMode ? '☀️' : '🌙';
+    const isNowDark = document.body.classList.contains('dark-mode');
+    toggleButton.innerHTML = isNowDark ? '☀️' : '🌙';
 }
 
 // Form submission handler
@@ -140,12 +151,13 @@ async function fetchWeatherData(city) {
 function displayWeatherData(data) {
     cityNameElement.textContent = `${data.name}, ${data.sys.country}`;
     temperatureElement.textContent = Math.round(data.main.temp);
-    weatherIconElement.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    // Fix: Use the correct icon URL from weatherapi.com
+    weatherIconElement.src = `https:${data.weather[0].icon}`;
     weatherIconElement.alt = data.weather[0].description;
     weatherDescriptionElement.textContent = data.weather[0].description;
     feelsLikeElement.textContent = `${Math.round(data.main.feels_like)}°C`;
     humidityElement.textContent = `${data.main.humidity}%`;
-    windSpeedElement.textContent = `${data.wind.speed} m/s`;
+    windSpeedElement.textContent = `${data.wind.speed.toFixed(1)} m/s`;
     
     hideLoading();
     showWeatherDisplay();

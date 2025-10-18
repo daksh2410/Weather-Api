@@ -1,5 +1,21 @@
-/* iOS-Inspired Weather App Styles */
+/* iOS-Inspired Weather App Styles - Darker Theme */
 :root {
+  --primary-color: #0ea5e9;
+  --secondary-color: #38bdf8;
+  --accent-color: #0284c7;
+  --background-color: #0c4a6e;
+  --card-background: #075985;
+  --text-color: #e0f2fe;
+  --border-color: #0369a1;
+  --shadow-color: rgba(14, 165, 233, 0.25);
+  --error-color: #f43f5e;
+  --success-color: #10b981;
+  --gradient-start: #0ea5e9;
+  --gradient-end: #0284c7;
+}
+
+/* Light mode variables - for contrast with dark default */
+.light-mode {
   --primary-color: #0ea5e9;
   --secondary-color: #38bdf8;
   --accent-color: #0284c7;
@@ -12,22 +28,6 @@
   --success-color: #10b981;
   --gradient-start: #7dd3fc;
   --gradient-end: #38bdf8;
-}
-
-/* Dark mode variables - iOS inspired */
-.dark-mode {
-  --primary-color: #38bdf8;
-  --secondary-color: #7dd3fc;
-  --accent-color: #0ea5e9;
-  --background-color: #0c4a6e;
-  --card-background: #075985;
-  --text-color: #e0f2fe;
-  --border-color: #0369a1;
-  --shadow-color: rgba(56, 189, 248, 0.25);
-  --error-color: #fb7185;
-  --success-color: #34d399;
-  --gradient-start: #0ea5e9;
-  --gradient-end: #0284c7;
 }
 
 * {
@@ -47,6 +47,11 @@ body {
   flex-direction: column;
   align-items: center;
   background-attachment: fixed;
+}
+
+/* Default to dark mode */
+body:not(.light-mode) {
+  background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
 }
 
 .container {
@@ -168,8 +173,12 @@ header {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
-  box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+  box-shadow: 0 4px 6px rgba(14, 165, 233, 0.3);
   transform: translateY(0);
+}
+
+.dark-mode .search-tag {
+  box-shadow: 0 4px 8px rgba(14, 165, 233, 0.4);
 }
 
 .search-tag:hover {
@@ -192,13 +201,24 @@ header {
   border-radius: 16px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text-color);
   outline: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+}
+
+.dark-mode #cityInput {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.light-mode #cityInput {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0c4a6e;
 }
 
 #cityInput:focus {
@@ -217,8 +237,12 @@ header {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
   transform: translateY(0);
+}
+
+.dark-mode #searchBtn {
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.5);
 }
 
 #searchBtn:hover {
@@ -402,20 +426,28 @@ header {
 }
 
 .detail-item {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
   padding: 20px 15px;
   border-radius: 16px;
   border: 1px solid var(--border-color);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
 }
 
 .detail-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(14, 165, 233, 0.2);
+  box-shadow: 0 12px 25px rgba(14, 165, 233, 0.3);
   border-color: var(--primary-color);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
+}
+
+.light-mode .detail-item {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+}
+
+.light-mode .detail-item:hover {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
 }
 
@@ -634,6 +666,11 @@ footer {
   background: linear-gradient(135deg, var(--background-color) 0%, #0c4a6e 100%);
 }
 
+/* Light mode background */
+.light-mode body {
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+}
+
 /* Add glassmorphism effect to all cards */
 .search-container,
 .weather-display,
@@ -642,11 +679,11 @@ footer {
 .recent-searches,
 header,
 footer {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .dark-mode .search-container,
@@ -656,7 +693,19 @@ footer {
 .dark-mode .recent-searches,
 .dark-mode header,
 .dark-mode footer {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(15, 23, 42, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.light-mode .search-container,
+.light-mode .weather-display,
+.light-mode .loading,
+.light-mode .error-message,
+.light-mode .recent-searches,
+.light-mode header,
+.light-mode footer {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
 }
