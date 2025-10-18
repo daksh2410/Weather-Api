@@ -139,6 +139,9 @@ function displayWeatherData(data) {
     // Generate mock forecast data for the strip
     generateForecastStrip();
     
+    // Update map background based on weather condition
+    updateMapBackground(data.weather[0].description);
+    
     hideLoading();
     showWeatherDisplay();
 }
@@ -237,4 +240,86 @@ function showWeatherDisplay() {
 // Hide weather display
 function hideWeatherDisplay() {
     weatherDisplay.classList.add('hidden');
+}
+
+// Update map background based on weather condition
+function updateMapBackground(condition) {
+    const mapBackground = document.getElementById('mapBackground');
+    if (!mapBackground) return;
+    
+    // Clear previous content
+    mapBackground.innerHTML = '';
+    
+    // Add weather-specific styling
+    let gradient;
+    if (condition.toLowerCase().includes('sun') || condition.toLowerCase().includes('clear')) {
+        gradient = 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)';
+    } else if (condition.toLowerCase().includes('cloud')) {
+        gradient = 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)';
+    } else if (condition.toLowerCase().includes('rain') || condition.toLowerCase().includes('drizzle')) {
+        gradient = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+    } else if (condition.toLowerCase().includes('snow')) {
+        gradient = 'linear-gradient(135deg, #c2e59c 0%, #64b3f4 100%)';
+    } else if (condition.toLowerCase().includes('storm')) {
+        gradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    } else {
+        // Default gradient
+        gradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    }
+    
+    // Set the background
+    mapBackground.style.background = gradient;
+    
+    // Add animated elements for visual interest
+    createMapElements(mapBackground, condition);
+    
+    // Add overlay for better text readability
+    const overlay = document.createElement('div');
+    overlay.className = 'map-overlay';
+    mapBackground.appendChild(overlay);
+}
+
+// Create animated elements for the map background
+function createMapElements(container, condition) {
+    // Create multiple animated elements
+    for (let i = 0; i < 5; i++) {
+        const element = document.createElement('div');
+        element.className = 'map-element';
+        
+        // Position randomly
+        const size = Math.floor(Math.random() * 30) + 10;
+        const posX = Math.floor(Math.random() * 80) + 10;
+        const posY = Math.floor(Math.random() * 80) + 10;
+        
+        element.style.width = `${size}px`;
+        element.style.height = `${size}px`;
+        element.style.left = `${posX}%`;
+        element.style.top = `${posY}%`;
+        
+        // Style based on weather condition
+        if (condition.toLowerCase().includes('sun') || condition.toLowerCase().includes('clear')) {
+            element.style.background = 'rgba(255, 255, 255, 0.3)';
+            element.style.borderRadius = '50%';
+            element.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
+        } else if (condition.toLowerCase().includes('cloud')) {
+            element.style.background = 'rgba(255, 255, 255, 0.4)';
+            element.style.borderRadius = '50%';
+            element.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
+        } else if (condition.toLowerCase().includes('rain')) {
+            element.style.background = 'rgba(255, 255, 255, 0.2)';
+            element.style.borderRadius = '2px';
+            element.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.2)';
+        } else {
+            element.style.background = 'rgba(255, 255, 255, 0.2)';
+            element.style.borderRadius = '3px';
+            element.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.2)';
+        }
+        
+        // Add animation
+        const duration = Math.floor(Math.random() * 10) + 10;
+        element.style.animation = `floatMap ${duration}s infinite ease-in-out`;
+        element.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(element);
+    }
 }

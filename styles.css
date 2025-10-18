@@ -194,6 +194,9 @@ body {
   text-align: center;
   animation: fadeIn 0.5s ease-out;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -201,9 +204,45 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Map Background */
+.map-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 100%);
+  opacity: 0.7;
+}
+
+.map-element {
+  position: absolute;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.weather-card:hover .map-background {
+  opacity: 0.4;
+}
+
 /* Weather Header */
 .weather-header {
   margin-bottom: var(--spacing-lg);
+  position: relative;
+  z-index: 2;
 }
 
 .city-name {
@@ -222,6 +261,8 @@ body {
   align-items: center;
   margin-bottom: var(--spacing-lg);
   animation: float 3s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes float {
@@ -235,6 +276,8 @@ body {
   height: 100px;
   filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
   transition: transform 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .weather-icon:hover {
@@ -244,6 +287,8 @@ body {
 /* Temperature Display */
 .temperature-display {
   margin-bottom: var(--spacing-md);
+  position: relative;
+  z-index: 2;
 }
 
 .temperature {
@@ -272,6 +317,8 @@ body {
   letter-spacing: 3px;
   margin-bottom: var(--spacing-xl);
   opacity: 0.9;
+  position: relative;
+  z-index: 2;
 }
 
 /* Weather Details Grid */
@@ -280,6 +327,8 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-xl);
+  position: relative;
+  z-index: 2;
 }
 
 .detail-item {
@@ -287,6 +336,8 @@ body {
   border-radius: var(--radius-md);
   padding: var(--spacing-sm);
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .dark-mode .detail-item {
@@ -322,6 +373,8 @@ body {
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
   margin-top: var(--spacing-lg);
+  position: relative;
+  z-index: 2;
 }
 
 .dark-mode .forecast-strip {
