@@ -6,12 +6,12 @@ const url = require('url');
 const database = require('./database');
 const cache = require('./cache');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 // Load configuration
 const config = require('./config.example');
 
 // Replace with your actual API key from weatherapi.com
-const API_KEY = config.WEATHERAPI_KEY || 'YOUR_WEATHERAPI_KEY_HERE';
+const API_KEY = process.env.WEATHERAPI_KEY || config.WEATHERAPI_KEY || 'YOUR_WEATHERAPI_KEY_HERE';
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -170,6 +170,6 @@ function fetchWeatherData(city, res) {
 }
 
 server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+  console.log(`Server running on port ${PORT}`);
   console.log('Press Ctrl+C to stop the server');
 });
