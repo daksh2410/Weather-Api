@@ -3,31 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechWeather - API Integrated Weather App</title>
+    <title>TechWeather - Modern Weather App</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Using system fonts for better performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 class="main-title">TechWeather</h1>
-            <p class="subtitle">API-Integrated Weather Forecast</p>
-        </header>
-        
-        <main>
+    <div class="app-container">
+        <div class="search-header">
+            <h1 class="app-title">TechWeather</h1>
             <div class="search-container">
-                <form id="weatherForm">
-                    <input type="text" id="cityInput" placeholder="Enter city name..." autocomplete="off">
-                    <button type="submit" id="searchBtn">Search</button>
+                <form id="weatherForm" class="search-form">
+                    <input type="text" id="cityInput" class="search-input" placeholder="Enter city name..." autocomplete="off">
+                    <button type="submit" id="searchBtn" class="search-button">Search</button>
                 </form>
-                <div class="recent-searches" id="recentSearches">
-                    <h3>Recent Searches:</h3>
-                    <div class="search-tags" id="searchTags">
-                        <!-- Recent searches will be populated here -->
-                    </div>
-                </div>
             </div>
-            
+        </div>
+        
+        <div class="main-content">
             <div class="loading hidden" id="loading">
                 <div class="spinner"></div>
                 <p>Loading weather data...</p>
@@ -37,40 +30,52 @@
                 <p>City not found. Please try again.</p>
             </div>
             
-            <div class="weather-display hidden" id="weatherDisplay">
-                <div class="current-weather">
-                    <h2 id="cityName">City Name</h2>
-                    <div class="weather-main">
-                        <div class="temperature">
-                            <span id="temperature">--</span>
-                            <span class="temp-unit">°C</span>
-                        </div>
-                        <div class="weather-icon">
-                            <img id="weatherIcon" src="" alt="Weather icon">
-                        </div>
-                    </div>
-                    <p class="weather-description" id="weatherDescription">Weather Description</p>
-                    <div class="weather-details">
-                        <div class="detail-item">
-                            <span class="label">Feels Like:</span>
-                            <span id="feelsLike">--°C</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Humidity:</span>
-                            <span id="humidity">--%</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Wind Speed:</span>
-                            <span id="windSpeed">-- m/s</span>
-                        </div>
+            <!-- Modern Weather Card -->
+            <div class="weather-card hidden" id="weatherDisplay">
+                <div class="weather-header">
+                    <h2 class="city-name" id="cityName">City Name</h2>
+                    <div class="weather-icon-container">
+                        <img id="weatherIcon" class="weather-icon" src="" alt="Weather icon">
                     </div>
                 </div>
+                
+                <div class="temperature-display">
+                    <span class="temperature" id="temperature">--</span>
+                    <span class="temp-unit">°C</span>
+                </div>
+                
+                <p class="weather-condition" id="weatherDescription">Weather Condition</p>
+                
+                <div class="weather-details-grid">
+                    <div class="detail-item">
+                        <span class="label">Feels Like</span>
+                        <span class="value" id="feelsLike">--°</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Humidity</span>
+                        <span class="value" id="humidity">--%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Wind</span>
+                        <span class="value" id="windSpeed">-- m/s</span>
+                    </div>
+                </div>
+                
+                <!-- Forecast strip at the bottom -->
+                <div class="forecast-strip" id="forecastStrip">
+                    <!-- Forecast items will be populated here -->
+                </div>
             </div>
-        </main>
+        </div>
         
-        <footer>
-            <p>© 2025 TechWeather | API-Integrated Web App</p>
-        </footer>
+        <div class="recent-searches-container">
+            <div class="recent-searches" id="recentSearches">
+                <h3 class="recent-title">Recent Searches</h3>
+                <div class="search-tags" id="searchTags">
+                    <!-- Recent searches will be populated here -->
+                </div>
+            </div>
+        </div>
     </div>
     
     <script src="script.js"></script>
