@@ -41,6 +41,12 @@
   --border-color: #333333;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --light-gray: #2a2a2a;
+  
+  /* Dark mode background image */
+  background-image: url('sky.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 * {
@@ -59,6 +65,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
   overflow-x: hidden;
+  background-image: url('sky2.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -74,6 +81,7 @@ body {
   pointer-events: none;
   z-index: -1;
   overflow: hidden;
+  opacity: 0.8;
 }
 
 .left-decoration, .right-decoration {
@@ -193,15 +201,12 @@ body {
   position: absolute;
   opacity: 0.15;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  animation: float 8s infinite ease-in-out;
 }
 
 .geometric-shape:nth-child(2n) {
-  animation-delay: 2s;
 }
 
 .geometric-shape:nth-child(3n) {
-  animation-delay: 4s;
 }
 
 .geometric-shape.triangle {
@@ -265,15 +270,12 @@ body {
 .seasonal-element {
   position: absolute;
   opacity: 0.25;
-  animation: float 10s infinite ease-in-out;
 }
 
 .seasonal-element:nth-child(2n) {
-  animation-delay: 3s;
 }
 
 .seasonal-element:nth-child(3n) {
-  animation-delay: 6s;
 }
 
 .seasonal-element.snowflake {
@@ -355,12 +357,7 @@ body {
   50% { opacity: 1; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  25% { transform: translateY(-10px) translateX(5px); }
-  50% { transform: translateY(-20px) translateX(-5px); }
-  75% { transform: translateY(-10px) translateX(-10px); }
-}
+/* @keyframes float - removed for static display */
 
 @keyframes slide {
   0% { background-position: 0 0; }
@@ -534,7 +531,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .map-overlay {
@@ -571,37 +570,29 @@ body {
   margin-bottom: var(--spacing-md);
 }
 
-/* Weather Icon */
-.weather-icon-container {
+/* Weather Condition Image */
+.weather-condition-image-container {
   width: 100%;
-  height: 120px;
+  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: var(--spacing-lg);
-  animation: float 3s ease-in-out infinite;
+  margin-bottom: var(--spacing-md);
   position: relative;
   z-index: 2;
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+.weather-condition-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
 }
 
-.weather-icon {
-  width: 100px;
-  height: 100px;
-  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
-  transition: transform 0.3s ease;
-  position: relative;
-  z-index: 2;
-}
-
-.weather-icon:hover {
-  transform: scale(1.1);
-}
+/* Weather Icon - removed as per user request */
 
 /* Temperature Display */
 .temperature-display {
@@ -838,16 +829,6 @@ body {
   }
 }
 
-@keyframes floatMap {
-  0% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
-  25% { transform: translate(10px, -15px) rotate(5deg); opacity: 0.5; }
-  50% { transform: translate(20px, 5px) rotate(10deg); opacity: 0.7; }
-  75% { transform: translate(10px, 15px) rotate(5deg); opacity: 0.5; }
-  100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
-}
+/* @keyframes floatMap - removed for static display */
 
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-}
+/* @keyframes pulse - removed for static display */

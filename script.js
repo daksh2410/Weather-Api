@@ -9,7 +9,7 @@ const errorMessage = document.getElementById('errorMessage');
 const weatherDisplay = document.getElementById('weatherDisplay');
 const cityNameElement = document.getElementById('cityName');
 const temperatureElement = document.getElementById('temperature');
-const weatherIconElement = document.getElementById('weatherIcon');
+const weatherConditionImageElement = document.getElementById('weatherConditionImage');
 const weatherDescriptionElement = document.getElementById('weatherDescription');
 const feelsLikeElement = document.getElementById('feelsLike');
 const humidityElement = document.getElementById('humidity');
@@ -38,10 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create initial decorative elements
     createDecorativeElements('sunny', 'day');
     
-    // Set default background with less transparency
-    document.body.style.backgroundImage = 'url(sky.jpg)';
+    // Hide weather condition image by default
+    if (weatherConditionImageElement) {
+        weatherConditionImageElement.style.display = 'none';
+    }
     
-    // Create background overlay for transparency
+    // Create background overlay for transparency (20% opacity as per user preference)
     createBackgroundOverlay();
 });
 
@@ -79,6 +81,17 @@ function toggleDarkMode() {
     const toggleButton = document.querySelector('.dark-mode-toggle');
     const isNowDark = document.body.classList.contains('dark-mode');
     toggleButton.innerHTML = isNowDark ? '☀️' : '🌙';
+    
+    // Update background overlay for dark mode
+    const overlay = document.getElementById('backgroundOverlay');
+    if (overlay) {
+        // Set 20% opacity (0.2) as per user preference
+        if (isNowDark) {
+            overlay.style.background = 'rgba(42, 42, 42, 0.2)';
+        } else {
+            overlay.style.background = 'rgba(245, 245, 245, 0.2)';
+        }
+    }
 }
 
 // Form submission handler
@@ -131,17 +144,7 @@ function displayWeatherData(data) {
     cityNameElement.textContent = `${data.name}, ${data.sys.country}`;
     temperatureElement.textContent = Math.round(data.main.temp);
     
-    // Handle weather icon - use the correct icon URL from weatherapi.com
-    if (data.weather[0].icon) {
-        // WeatherAPI.com provides full URLs, so we can use them directly
-        weatherIconElement.src = data.weather[0].icon.startsWith('http') ? 
-            data.weather[0].icon : `https:${data.weather[0].icon}`;
-        weatherIconElement.alt = data.weather[0].description;
-    } else {
-        // Fallback to a default icon if none is provided
-        weatherIconElement.src = 'https://cdn.weatherapi.com/weather/64x64/day/113.png';
-        weatherIconElement.alt = 'Weather icon';
-    }
+    // Weather icon has been removed as per user request
     
     weatherDescriptionElement.textContent = data.weather[0].description;
     feelsLikeElement.textContent = `${Math.round(data.main.feels_like)}°`;
@@ -151,8 +154,8 @@ function displayWeatherData(data) {
     // Generate mock forecast data for the strip
     generateForecastStrip();
     
-    // Update map background based on weather condition
-    updateMapBackground(data.weather[0].description);
+    // Set weather condition image based on weather condition
+    setWeatherConditionImage(data.weather[0].description);
     
     // Update decorative elements based on weather and time
     const isNight = isNightTime(data);
@@ -167,6 +170,48 @@ function isNightTime(data) {
     // This is a simplified check - in a real app, you'd use actual sunrise/sunset data
     const condition = data.weather[0].description.toLowerCase();
     return condition.includes('night') || condition.includes('moon');
+}
+
+// Set weather condition image based on weather condition
+function setWeatherConditionImage(condition) {
+    if (!weatherConditionImageElement) return;
+    
+    // Map weather conditions to specific images
+    let imageSrc = '';
+    const conditionLower = condition.toLowerCase();
+    
+    if (conditionLower.includes('sun') || conditionLower.includes('clear')) {
+        imageSrc = 'conditions/Sunny.png';
+    } else if (conditionLower.includes('partly cloudy') || conditionLower.includes('overcast') || conditionLower.includes('cloud')) {
+        imageSrc = 'conditions/Overcast.png';
+    } else if (conditionLower.includes('rain') || conditionLower.includes('drizzle') || conditionLower.includes('shower')) {
+        imageSrc = 'conditions/Rain.png';
+    } else if (conditionLower.includes('snow')) {
+        imageSrc = 'conditions/Snowy.png';
+    } else if (conditionLower.includes('storm') || conditionLower.includes('thunder')) {
+        imageSrc = 'conditions/Storm.png';
+    } else if (conditionLower.includes('mist') || conditionLower.includes('fog')) {
+        imageSrc = 'conditions/Foggy.png';
+    } else {
+        // Hide image if no matching condition
+        weatherConditionImageElement.style.display = 'none';
+        return;
+    }
+    
+    // Set the image source and show the element
+    weatherConditionImageElement.onload = function() {
+        // Image loaded successfully
+        weatherConditionImageElement.style.display = 'block';
+    };
+    
+    weatherConditionImageElement.onerror = function() {
+        // Handle image loading error
+        console.error('Failed to load weather condition image:', imageSrc);
+        weatherConditionImageElement.style.display = 'none';
+    };
+    
+    weatherConditionImageElement.src = imageSrc;
+    weatherConditionImageElement.alt = condition;
 }
 
 // Update map background based on weather condition
@@ -242,10 +287,7 @@ function createMapElements(container, condition) {
             element.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
         }
         
-        // Add animation
-        const duration = Math.floor(Math.random() * 15) + 10;
-        element.style.animation = `floatMap ${duration}s infinite ease-in-out`;
-        element.style.animationDelay = `${Math.random() * 5}s`;
+        // No animation for static display
         
         container.appendChild(element);
     }
@@ -262,7 +304,7 @@ function createMapElements(container, condition) {
     cityMarker.style.borderRadius = '50%';
     cityMarker.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.8)';
     cityMarker.style.zIndex = '10';
-    cityMarker.style.animation = 'pulse 2s infinite';
+    // No animation for static display
     
     container.appendChild(cityMarker);
 }
@@ -425,10 +467,7 @@ function createRainDrops(container) {
         drop.style.boxShadow = '0 0 3px rgba(100, 150, 255, 0.6)';
         drop.style.opacity = `${Math.random() * 0.5 + 0.3}`;
         
-        // Add animation
-        const duration = Math.random() * 3 + 2;
-        drop.style.animation = `float ${duration}s infinite ease-in-out`;
-        drop.style.animationDelay = `${Math.random() * 2}s`;
+        // No animation for static display
         
         container.appendChild(drop);
     }
@@ -599,26 +638,29 @@ function hideWeatherDisplay() {
     weatherDisplay.classList.add('hidden');
 }
 
-// Create background overlay with less transparency
+// Create background overlay with 20% opacity as per user preference
 function createBackgroundOverlay() {
-    // Create overlay for transparency effect
-    const overlay = document.createElement('div');
-    overlay.id = 'backgroundOverlay';
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.zIndex = '-1';
+    // Check if overlay already exists
+    let overlay = document.getElementById('backgroundOverlay');
+    if (!overlay) {
+        // Create overlay for transparency effect
+        overlay = document.createElement('div');
+        overlay.id = 'backgroundOverlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.zIndex = '-1';
+        document.body.appendChild(overlay);
+    }
     
-    // Set lower transparency (less opaque) - 20% opacity
+    // Set 20% opacity (0.2) as per user preference
     if (document.body.classList.contains('dark-mode')) {
         overlay.style.background = 'rgba(42, 42, 42, 0.2)';
     } else {
         overlay.style.background = 'rgba(245, 245, 245, 0.2)';
     }
-    
-    document.body.appendChild(overlay);
 }
 
 // Update the toggleDarkMode function to handle background overlay
@@ -641,6 +683,7 @@ function toggleDarkMode() {
     // Update background overlay for dark mode
     const overlay = document.getElementById('backgroundOverlay');
     if (overlay) {
+        // Set 20% opacity (0.2) as per user preference
         if (isNowDark) {
             overlay.style.background = 'rgba(42, 42, 42, 0.2)';
         } else {
